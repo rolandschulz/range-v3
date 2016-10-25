@@ -16,8 +16,21 @@
 #include <range/v3/view/reverse.hpp>
 #include <range/v3/view/any_view.hpp>
 #include <range/v3/utility/copy.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+struct Abstract
+{
+    Abstract() = default;
+    Abstract(Abstract const&) = default;
+    virtual ~Abstract() {}
+    virtual void foo() = 0;
+};
+
+struct Concrete : Abstract {
+	void foo() override {}
+};
 
 int main()
 {
@@ -73,6 +86,15 @@ int main()
         };
         auto vec2 = std::vector<Int>{begin(ten_ints), end(ten_ints)};
         ::check_equal(any_view<int>{vec2}, ten_ints);
+    }
+
+    {
+        std::vector<Concrete> as { Concrete() };
+        ranges::any_view<Abstract &> bs = as;
+        ::models<concepts::InputView>(bs);
+        ranges::for_each(bs, [] (Abstract & a) {
+            a.foo();
+        });
     }
 
     return test_result();
