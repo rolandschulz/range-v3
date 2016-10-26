@@ -304,7 +304,13 @@ namespace ranges
 
             struct OutputIterator
               : refines<Iterator(_1), Writable>
-            {};
+            {
+                template<typename O, typename T>
+                auto requires_(O&& o, T&&) -> decltype(
+                    concepts::valid_expr(
+                        *o++ = val<T>()
+                    ));
+            };
 
             struct InputIterator
               : refines<Iterator, Readable>
@@ -319,7 +325,7 @@ namespace ranges
                 auto requires_(I&& i) -> decltype(
                     concepts::valid_expr(
                         concepts::model_of<DerivedFrom, category_t<I>, ranges::input_iterator_tag>(),
-                        concepts::model_of<Readable>(i++)
+                        concepts::model_of<CommonReference, reference_t<I> &&, decltype(*i++) &&>()
                     ));
             };
 

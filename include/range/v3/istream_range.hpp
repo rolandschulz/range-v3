@@ -59,7 +59,6 @@ namespace ranges
                 {
                     return detail::move(rng_->cached());
                 }
-
             };
             void next()
             {

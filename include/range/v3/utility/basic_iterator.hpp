@@ -48,23 +48,13 @@ namespace ranges
             private:
                 I *p_ = nullptr;
             public:
-                using value_type = iterator_value_t<I>;
                 postfix_increment_proxy() = default;
                 postfix_increment_proxy(postfix_increment_proxy const&) = delete;
                 RANGES_CXX14_CONSTEXPR
                 postfix_increment_proxy(postfix_increment_proxy &&that) noexcept
                   : p_(detail::exchange(that.p_, nullptr))
                 {}
-                // Really, don't save the proxy and assign to it later, but
-                // this needs to be present to satisfy Movable, which is required
-                // by Readable.
-                postfix_increment_proxy &operator=(postfix_increment_proxy &&that) noexcept
-                {
-                    RANGES_ASSERT(false && "operation not supported");
-                    this->~postfix_increment_proxy();
-                    p_ = detail::exchange(that.p_, nullptr);
-                    return *this;
-                }
+                postfix_increment_proxy &operator=(postfix_increment_proxy &&) = delete;
                 RANGES_CXX14_CONSTEXPR
                 explicit postfix_increment_proxy(I &i) noexcept
                   : p_(std::addressof(i))
@@ -72,7 +62,7 @@ namespace ranges
                 ~postfix_increment_proxy()
                 {
                     if(p_ != nullptr)
-                        ++p_;
+                        ++*p_;
                 }
                 RANGES_CXX14_CONSTEXPR
                 iterator_reference_t<I> operator*() const
@@ -87,14 +77,6 @@ namespace ranges
                     return indirect_move(*ref.p_);
                 }
             };
-
-            // A metafunction to choose the result type of postfix ++
-            template<typename I, typename Cat>
-            using postfix_increment_result =
-                meta::if_<
-                    DerivedFrom<Cat, ranges::forward_iterator_tag>,
-                    I,
-                    postfix_increment_proxy<I>>;
 
             template<typename Cur>
             using cursor_reference_t =
@@ -306,7 +288,6 @@ namespace ranges
             {
             private:
                 friend basic_iterator<Cur, S>;
-                using postfix_increment_result_t = basic_iterator<Cur, S>;
                 using reference_t = basic_proxy_reference<Cur>;
                 using const_reference_t = basic_proxy_reference<Cur const>;
                 using cursor_concept_t = range_access::OutputCursor;
@@ -338,10 +319,6 @@ namespace ranges
                     decltype(detail::iter_cat(_nullptr_v<cursor_concept_t>()));
                 using pointer = meta::_t<std::add_pointer<reference>>;
                 using common_reference = common_reference_t<reference &&, value_type &>;
-            private:
-                using postfix_increment_result_t =
-                    postfix_increment_result<
-                        basic_iterator<Cur, S>, iterator_category>;
             };
         }
         /// \endcond
@@ -413,7 +390,11 @@ namespace ranges
             friend range_access;
             CONCEPT_ASSERT(detail::Cursor<Cur>());
             using assoc_types_ = detail::iterator_associated_types_base<Cur, S>;
-            using typename assoc_types_::postfix_increment_result_t;
+            using postfix_increment_result_t =
+                meta::if_c<
+                    (bool) detail::ForwardCursor<Cur>(),
+                    basic_iterator,
+                    detail::postfix_increment_proxy<basic_iterator>>;
             using typename assoc_types_::cursor_concept_t;
             using typename assoc_types_::reference_t;
             using typename assoc_types_::const_reference_t;
@@ -483,7 +464,7 @@ namespace ranges
             RANGES_CXX14_CONSTEXPR postfix_increment_result_t operator++(int)
             {
                 postfix_increment_result_t tmp(*this);
-                if(!detail::ReadableCursor<Cur>() || detail::ForwardCursor<Cur>())
+                if(detail::ForwardCursor<Cur>())
                     ++*this;
                 return tmp;
             }
@@ -667,19 +648,6 @@ namespace ranges
             )
         }
         /// \endcond
-
-        // /// \cond
-        // // This is so that writable postfix proxy objects satisfy Readability
-        // template<typename T, typename I, typename Qual1, typename Qual2>
-        // struct basic_common_reference<T, detail::writable_postfix_increment_proxy<I>, Qual1, Qual2>
-        //   : basic_common_reference<T, iterator_value_t<I>, Qual1, meta::quote_trait<std::add_lvalue_reference>>
-        // {};
-
-        // template<typename I, typename T, typename Qual1, typename Qual2>
-        // struct basic_common_reference<detail::writable_postfix_increment_proxy<I>, T, Qual1, Qual2>
-        //   : basic_common_reference<iterator_value_t<I>, T, meta::quote_trait<std::add_lvalue_reference>, Qual2>
-        // {};
-        // /// \endcond
     }
 }
 

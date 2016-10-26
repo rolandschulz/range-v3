@@ -11,6 +11,7 @@
 
 #include <cstring>
 #include <tuple>
+#include <memory>
 #include <range/v3/utility/basic_iterator.hpp>
 #include <range/v3/utility/common_tuple.hpp>
 #include "../simple_test.hpp"
@@ -21,7 +22,7 @@ namespace test_weak_input
     template<typename I>
     struct cursor
     {
-        I it_;
+        std::shared_ptr<I> it_;
         struct mixin : ranges::basic_mixin<cursor>
         {
             mixin() = default;
@@ -29,12 +30,12 @@ namespace test_weak_input
             mixin(I i) : mixin(cursor{i}) {}
         };
         cursor() = default;
-        explicit cursor(I i) : it_(i) {}
+        explicit cursor(I i) : it_(std::make_shared<I>(i)) {}
         template<class J, CONCEPT_REQUIRES_(ranges::ConvertibleTo<J, I>())>
-        cursor(cursor<J> that) : it_(std::move(that.it_)) {}
+        cursor(cursor<J> that) : it_(std::make_shared<I>(std::move(that.it_))) {}
 
-        auto get() const -> decltype(*it_) { return *it_; }
-        void next() { ++it_; }
+        auto get() const -> decltype(**it_) { return **it_; }
+        void next() { ++*it_; }
     };
 
     CONCEPT_ASSERT(ranges::detail::InputCursor<cursor<char*>>());
@@ -57,11 +58,20 @@ namespace test_weak_input
         using namespace ranges;
         using I = iterator<char const *>;
 
-        static const char sz[] = "hello world";
+        static const char sz[] = "abcdefghijklmnopqrstuvwxyz";
         I i{sz};
-        CHECK(*i == 'h');
+        CHECK(*i == 'a');
         ++i;
+        CHECK(*i == 'b');
+        i++;
+        CHECK(*i == 'c');
+        CHECK(*++i == 'd');
+        CHECK(*i++ == 'd');
         CHECK(*i == 'e');
+        // BUGBUG This one fails. :-(
+        auto tmp = ((void)i++, *i);
+        CHECK(tmp == 'f');
+        CHECK(*i == 'f');
     }
 }
 
@@ -137,18 +147,18 @@ namespace test_weak_output
     {
     private:
         friend ranges::range_access;
-        I it_;
-        void set(ranges::iterator_value_t<I> v) const { *it_ = v; }
-        void next() { ++it_; }
+        std::shared_ptr<I> it_;
+        void set(ranges::iterator_value_t<I> v) const { **it_ = std::move(v); }
+        void next() { ++*it_; }
     public:
         struct mixin : ranges::basic_mixin<cursor>
         {
             mixin() = default;
-            using ranges::basic_mixin<cursor>::basic_mixin;
+            using mixin::basic_mixin::basic_mixin;
             mixin(I i) : mixin(cursor{i}) {}
         };
         cursor() = default;
-        explicit cursor(I i) : it_(i) {}
+        explicit cursor(I i) : it_(std::make_shared<I>(i)) {}
     };
 
     CONCEPT_ASSERT(ranges::detail::OutputCursor<cursor<char*>, char>());
@@ -165,8 +175,7 @@ namespace test_weak_output
         char buf[10];
         iterator<char*> i(buf);
         *i = 'h';
-        ++i;
-        *i = 'e';
+        *++i = 'e';
         ++i;
         *i = 'l';
         ++i;
@@ -175,6 +184,16 @@ namespace test_weak_output
         *i = 'o';
         ++i;
         *i = '\0';
+        CHECK(0 == std::strcmp(buf, "hello"));
+
+        std::memset(buf, 0, sizeof(buf));
+        i = iterator<char*>(buf);
+        *i++ = 'h';
+        *i++ = 'e';
+        *i++ = 'l';
+        *i++ = 'l';
+        *i++ = 'o';
+        *i++ = '\0';
         CHECK(0 == std::strcmp(buf, "hello"));
     }
 }

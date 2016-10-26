@@ -26,8 +26,23 @@ struct moveonly
 int main()
 {
     static const char test[] = "abcd3210";
-    std::istringstream ss{test};
-    ::check_equal(ranges::istream<moveonly>(ss),
-                  ranges::make_iterator_range(test, test + sizeof(test) - 1));
+    {
+        std::istringstream ss{test};
+        ::check_equal(ranges::istream<moveonly>(ss),
+                      ranges::make_iterator_range(test, test + sizeof(test) - 1));
+    }
+    {
+        std::istringstream ss{test};
+        auto rng = ranges::istream<char>(ss);
+        auto b = ranges::begin(rng);
+        CHECK(*b++ == 'a');
+        CHECK(*b++ == 'b');
+        CHECK(*b++ == 'c');
+        CHECK(*b == 'd');
+        CHECK(*b == 'd');
+        // BUGBUG Doesn't work :-(
+        auto tmp = ((void)b++, *b);
+        CHECK(tmp == '3');
+    }
     return ::test_result();
 }
