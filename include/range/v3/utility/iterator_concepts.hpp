@@ -436,7 +436,7 @@ namespace ranges
         /// \cond
         namespace detail
         {
-            template<typename I, bool IsReadable = (bool) Readable<I>()>
+	  template<typename I, bool IsReadable = (bool) Readable<I>()()>
             struct exclusively_writable_
             {
                 template<typename T>

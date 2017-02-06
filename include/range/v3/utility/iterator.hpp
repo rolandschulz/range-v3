@@ -120,7 +120,7 @@ namespace ranges
                     i = std::move(s);
                 }
                 template<typename I, typename S,
-                    CONCEPT_REQUIRES_(Sentinel<S, I>() && !Assignable<I&, S&&>())>
+			 CONCEPT_REQUIRES_(Sentinel<S, I>() && !Assignable<I&, S&&>()())>
                 RANGES_CXX14_CONSTEXPR
                 void operator()(I &i, S s) const
                 {
@@ -267,7 +267,7 @@ namespace ranges
         {
         private:
             template<typename I, typename S, typename D,
-                CONCEPT_REQUIRES_(!SizedSentinel<I, I>())>
+		     CONCEPT_REQUIRES_(!SizedSentinel<I, I>()())>
             RANGES_CXX14_CONSTEXPR
             std::pair<D, I> impl_i(I begin, S end, D d, concepts::Sentinel*) const
             {
@@ -406,8 +406,8 @@ namespace ranges
 
         struct iter_swap_fn
         {
-            template<typename Readable0, typename Readable1,
-                CONCEPT_REQUIRES_(IndirectlySwappable<Readable0, Readable1>())>
+            template<typename Readable0, typename Readable1 /*ICC DISABLE ,
+							      CONCEPT_REQUIRES_(IndirectlySwappable<Readable0, Readable1>())*/>
             RANGES_CXX14_CONSTEXPR
             void operator()(Readable0 a, Readable1 b) const
                 noexcept(is_nothrow_indirectly_swappable<Readable0, Readable1>::value)
@@ -878,7 +878,7 @@ namespace ranges
             }
 
             template<typename S,
-                CONCEPT_REQUIRES_(SemiRegular<S>() && !InputIterator<S>())>
+		     CONCEPT_REQUIRES_(SemiRegular<S>() && !InputIterator<S>()())>
             constexpr move_sentinel<S> operator()(S s) const
             {
                 return move_sentinel<S>{detail::move(s)};
@@ -890,7 +890,7 @@ namespace ranges
         /// \cond
         namespace detail
         {
-            template<typename I, bool IsReadable = (bool) Readable<I>()>
+	  template<typename I, bool IsReadable = (bool) Readable<I>()()>
             struct move_into_cursor_types
             {};
 

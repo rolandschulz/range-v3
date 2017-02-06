@@ -42,7 +42,7 @@ namespace ranges
                 drop_exactly_view<Rng>,
                 is_finite<Rng>::value ? finite : range_cardinality<Rng>::value>
           , private detail::non_propagating_cache<
-                range_iterator_t<Rng>, drop_exactly_view<Rng>, !RandomAccessRange<Rng>()>
+	  range_iterator_t<Rng>, drop_exactly_view<Rng>, !RandomAccessRange<Rng>()()>
         {
         private:
             friend range_access;
@@ -127,7 +127,7 @@ namespace ranges
                 )
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Int,
-                    CONCEPT_REQUIRES_(!Integral<Int>())>
+			 CONCEPT_REQUIRES_(!Integral<Int>()())>
                 static detail::null_pipe bind(drop_exactly_fn, Int)
                 {
                     CONCEPT_ASSERT_MSG(Integral<Int>(),
@@ -141,7 +141,7 @@ namespace ranges
                 {
                     return {all(std::forward<Rng>(rng)), n};
                 }
-                template<typename Rng, CONCEPT_REQUIRES_(!View<Rng>() && std::is_lvalue_reference<Rng>())>
+	      template<typename Rng, CONCEPT_REQUIRES_(!View<Rng>()() && std::is_lvalue_reference<Rng>())>
                 static iterator_range<range_iterator_t<Rng>, range_sentinel_t<Rng>>
                 invoke_(Rng && rng, range_difference_t<Rng> n, concepts::RandomAccessRange*)
                 {

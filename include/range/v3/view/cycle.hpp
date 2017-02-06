@@ -45,7 +45,7 @@ namespace ranges
         struct cycled_view
           : view_facade<cycled_view<Rng>, infinite>
           , private detail::non_propagating_cache<
-                range_iterator_t<Rng>, cycled_view<Rng>, !BoundedRange<Rng>()>
+	  range_iterator_t<Rng>, cycled_view<Rng>, !BoundedRange<Rng>()()>
         {
         private:
             CONCEPT_ASSERT(ForwardRange<Rng>());
@@ -53,7 +53,7 @@ namespace ranges
             Rng rng_;
 
             using cache_t = detail::non_propagating_cache<
-                range_iterator_t<Rng>, cycled_view<Rng>, !BoundedRange<Rng>()>;
+	      range_iterator_t<Rng>, cycled_view<Rng>, !BoundedRange<Rng>()()>;
 
             template<bool IsConst>
             struct cursor
@@ -182,7 +182,7 @@ namespace ranges
                 }
 
 #ifndef RANGES_DOXYGEN_INVOKED
-                template<typename Rng, CONCEPT_REQUIRES_(!Concept<Rng>())>
+	      template<typename Rng, CONCEPT_REQUIRES_(!Concept<Rng>()())>
                 void operator()(Rng &&) const
                 {
                     CONCEPT_ASSERT_MSG(ForwardRange<Rng>(),

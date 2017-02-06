@@ -35,7 +35,7 @@ namespace ranges
             {
             private:
                 friend action_access;
-                template<typename C, typename P = ident, CONCEPT_REQUIRES_(!Range<C>())>
+	      template<typename C, typename P = ident, CONCEPT_REQUIRES_(!Range<C>()())>
                 static auto bind(sort_fn sort, C pred, P proj = P{})
                 RANGES_DECLTYPE_AUTO_RETURN
                 (

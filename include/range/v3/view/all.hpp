@@ -66,7 +66,7 @@ namespace ranges
                 /// If it is container-like, turn it into a view, being careful
                 /// to preserve the Sized-ness of the range.
                 template<typename T,
-                    CONCEPT_REQUIRES_(!View<T>()),
+			 CONCEPT_REQUIRES_(!View<T>()()),
                     typename I = range_iterator_t<T>,
                     typename S = range_sentinel_t<T>,
                     typename SIC = sized_range_concept<T>,

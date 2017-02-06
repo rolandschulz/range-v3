@@ -40,7 +40,7 @@ namespace ranges
                 template<typename Rng>
                 using join_value_t =
                     meta::if_c<
-                        (bool) ranges::Container<range_value_t<Rng>>(),
+	      (bool) ranges::Container<range_value_t<Rng>>()(),
                         range_value_t<Rng>,
                         std::vector<range_value_t<range_value_t<Rng>>>>;
             public:

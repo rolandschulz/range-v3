@@ -40,7 +40,7 @@ namespace ranges
         struct reverse_view
           : view_adaptor<reverse_view<Rng>, Rng>
           , private detail::non_propagating_cache<
-                range_iterator_t<Rng>, reverse_view<Rng>, !BoundedRange<Rng>()>
+	  range_iterator_t<Rng>, reverse_view<Rng>, !BoundedRange<Rng>()()>
         {
         private:
             CONCEPT_ASSERT(BidirectionalRange<Rng>());
@@ -179,7 +179,7 @@ namespace ranges
                 }
             #ifndef RANGES_DOXYGEN_INVOKED
                 // For error reporting
-                template<typename Rng, CONCEPT_REQUIRES_(!Concept<Rng>())>
+	      template<typename Rng, CONCEPT_REQUIRES_(!Concept<Rng>()())>
                 void operator()(Rng &&) const
                 {
                     CONCEPT_ASSERT_MSG(BidirectionalRange<Rng>(),

@@ -35,7 +35,7 @@ namespace ranges
             {
             private:
                 friend action_access;
-                template<typename C, typename P = ident, CONCEPT_REQUIRES_(!Range<C>())>
+	      template<typename C, typename P = ident, CONCEPT_REQUIRES_(!Range<C>()())>
                 static auto bind(stable_sort_fn stable_sort, C pred, P proj = P{})
                 RANGES_DECLTYPE_AUTO_RETURN
                 (
@@ -67,7 +67,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng, typename C = ordered_less, typename P = ident,
-                    CONCEPT_REQUIRES_(!Concept<Rng, C, P>())>
+			 CONCEPT_REQUIRES_(!Concept<Rng, C, P>()())>
                 void operator()(Rng &&, C && = C{}, P && = P{}) const
                 {
                     CONCEPT_ASSERT_MSG(ForwardRange<Rng>(),

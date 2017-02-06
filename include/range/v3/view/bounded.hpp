@@ -56,7 +56,7 @@ namespace ranges
         {
         private:
             CONCEPT_ASSERT(Range<Rng>());
-            CONCEPT_ASSERT(!BoundedRange<Rng>());
+	  CONCEPT_ASSERT(!BoundedRange<Rng>()());
 
             Rng rng_;
 
@@ -128,7 +128,7 @@ namespace ranges
             struct bounded_fn
             {
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(Range<Rng>() && !BoundedRange<Rng>())>
+			 CONCEPT_REQUIRES_(Range<Rng>() && !BoundedRange<Rng>()())>
                 bounded_view<all_t<Rng>> operator()(Rng && rng) const
                 {
                     return bounded_view<all_t<Rng>>{all(std::forward<Rng>(rng))};
@@ -141,7 +141,7 @@ namespace ranges
                 }
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(!Range<Rng>())>
+			 CONCEPT_REQUIRES_(!Range<Rng>()())>
                 void operator()(Rng &&) const
                 {
                     CONCEPT_ASSERT_MSG(Range<Rng>(),

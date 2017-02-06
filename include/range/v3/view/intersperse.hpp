@@ -115,12 +115,12 @@ namespace ranges
             {
                 return {val_, ranges::empty(this->mutable_base())};
             }
-            CONCEPT_REQUIRES(BoundedRange<Rng>() && !SinglePass<range_iterator_t<Rng>>())
+            CONCEPT_REQUIRES(BoundedRange<Rng>() && !SinglePass<range_iterator_t<Rng>>()())
             cursor_adaptor end_adaptor() const
             {
                 return {val_, true};
             }
-            CONCEPT_REQUIRES(!BoundedRange<Rng>() || SinglePass<range_iterator_t<Rng>>())
+            CONCEPT_REQUIRES(!BoundedRange<Rng>()() || SinglePass<range_iterator_t<Rng>>())
             sentinel_adaptor end_adaptor() const
             {
                 return {};

@@ -42,7 +42,7 @@ namespace ranges
                 template<typename Rng>
                 using split_value_t =
                     meta::if_c<
-                        (bool) ranges::Container<Rng>(),
+	      (bool) ranges::Container<Rng>()(),
                         uncvref_t<Rng>,
                         std::vector<range_value_t<Rng>>>;
             public:
@@ -79,7 +79,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng, typename T,
-                    CONCEPT_REQUIRES_(!ConvertibleTo<T, range_value_t<Rng>>())>
+			 CONCEPT_REQUIRES_(!ConvertibleTo<T, range_value_t<Rng>>()())>
                 void operator()(Rng &&, T &&) const volatile
                 {
                     CONCEPT_ASSERT_MSG(ForwardRange<Rng>(),

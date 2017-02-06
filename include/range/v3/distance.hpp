@@ -99,7 +99,7 @@ namespace ranges
         {
         private:
             template<typename Rng,
-                CONCEPT_REQUIRES_(!is_infinite<Rng>())>
+		     CONCEPT_REQUIRES_(!is_infinite<Rng>()())>
             int impl_r(Rng &rng, range_difference_t<Rng> n, concepts::Range*) const
             {
                 return iter_distance_compare(begin(rng), end(rng), n);

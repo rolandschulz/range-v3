@@ -130,7 +130,7 @@ namespace ranges
                 detail::operator_arrow_(i, 42)
             )
 
-            template<typename I, bool IsReadable = (bool) Readable<I>()>
+	      template<typename I, bool IsReadable = (bool) Readable<I>()()>
             struct common_cursor_types
             {};
 
@@ -193,9 +193,9 @@ namespace ranges
                 }
                 template<typename OI, typename OS,
                     CONCEPT_REQUIRES_(
-                        (bool)SizedSentinel<OS, I>() &&
-                        (bool)SizedSentinel<OI, I>() &&
-                        (bool)SizedSentinel<S, OI>())>
+                        (bool)SizedSentinel<OS, I>()() &&
+                        (bool)SizedSentinel<OI, I>()() &&
+                        (bool)SizedSentinel<S, OI>()())>
                 iterator_difference_t<I>
                 distance_to(common_cursor<OI, OS> const &that) const
                 {
@@ -232,7 +232,7 @@ namespace ranges
                 }
                 template<typename I2, typename S2,
                     CONCEPT_REQUIRES_(Sentinel<S2, I>() && Sentinel<S, I2>() &&
-                        !EqualityComparable<I, I2>())>
+				      !EqualityComparable<I, I2>()())>
                 bool equal(common_cursor<I2, S2> const &that) const
                 {
                     return is_sentinel() ?

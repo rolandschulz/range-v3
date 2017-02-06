@@ -114,7 +114,7 @@ namespace ranges
             struct indexed_element_fn;
 
             template<typename I, typename S, typename O,
-                CONCEPT_REQUIRES_(!SizedSentinel<S, I>())>
+		     CONCEPT_REQUIRES_(!SizedSentinel<S, I>()())>
             O uninitialized_copy(I first, S last, O out)
             {
                 for(; first != last; ++first, ++out)
@@ -671,7 +671,7 @@ namespace ranges
         };
 
         template<typename...Ts, typename...Us,
-            CONCEPT_REQUIRES_(meta::and_c<(bool)EqualityComparable<Ts, Us>()...>::value)>
+		 CONCEPT_REQUIRES_(meta::and_c<(bool)EqualityComparable<Ts, Us>()()...>::value)>
         bool operator==(variant<Ts...> const &lhs, variant<Us...> const &rhs)
         {
             return (!lhs.valid() && !rhs.valid()) ||
@@ -683,7 +683,7 @@ namespace ranges
         }
 
         template<typename...Ts, typename...Us,
-            CONCEPT_REQUIRES_(meta::and_c<(bool)EqualityComparable<Ts, Us>()...>::value)>
+		 CONCEPT_REQUIRES_(meta::and_c<(bool)EqualityComparable<Ts, Us>()()...>::value)>
         bool operator!=(variant<Ts...> const &lhs, variant<Us...> const &rhs)
         {
             return !(lhs == rhs);

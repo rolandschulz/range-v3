@@ -54,7 +54,7 @@ namespace ranges
             using uncounted_t = decltype(
                 ranges::uncounted(std::declval<range_iterator_t<Rng>&>()));
 
-            template<typename Rng, bool = (bool) RandomAccessRange<Rng>()>
+	  template<typename Rng, bool = (bool) RandomAccessRange<Rng>()()>
             struct trailing
             {
                 trailing() = default;
@@ -120,7 +120,7 @@ namespace ranges
                 {
                     return size_(ranges::size(this->base()));
                 }
-                CONCEPT_REQUIRES(SizedRange<Rng>() && !SizedRange<Rng const>())
+	      CONCEPT_REQUIRES(SizedRange<Rng>() && !SizedRange<Rng const>()())
                 range_size_t<Rng> size()
                 {
                     return size_(ranges::size(this->base()));
@@ -348,7 +348,7 @@ namespace ranges
             #ifndef RANGES_DOXYGEN_INVOKED
             private:
                 template<typename Int,
-                    CONCEPT_REQUIRES_(!Integral<Int>())>
+			 CONCEPT_REQUIRES_(!Integral<Int>()())>
                 static detail::null_pipe bind(sliding_fn, Int)
                 {
                     CONCEPT_ASSERT_MSG(Integral<Int>(),

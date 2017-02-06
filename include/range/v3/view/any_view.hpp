@@ -127,7 +127,7 @@ namespace ranges
                         polymorphic_downcast<any_cursor_impl const *>(&that);
                     return pthat->it_.get() == it_.get();
                 }
-                CONCEPT_REQUIRES(!EqualityComparable<I>())
+	      CONCEPT_REQUIRES(!EqualityComparable<I>()())
                 bool equal_(Input const &) const
                 {
                     return true;

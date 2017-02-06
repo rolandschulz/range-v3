@@ -413,7 +413,7 @@ namespace ranges
             template<typename T>
             using cursor_concept_t = meta::_t<cursor_concept<T>>;
 
-            template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()>
+	  template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()()>
             struct is_writable_cursor_
               : std::true_type
             {};

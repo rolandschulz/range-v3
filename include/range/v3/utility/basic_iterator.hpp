@@ -65,7 +65,7 @@ namespace ranges
             };
 
             // Collect the reference types associated with cursors
-            template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()>
+	  template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()()>
             struct cursor_traits
             {
             private:
@@ -99,7 +99,7 @@ namespace ranges
             // The One Proxy Reference type to rule them all. basic_iterator uses this
             // as the return type of operator* when the cursor type has a set() member
             // function of the correct signature (i.e., if it can accept a value_type &&).
-            template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()>
+	  template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()()>
             struct basic_proxy_reference
               : cursor_traits<Cur>
                 // The following adds conversion operators to the common reference
@@ -240,7 +240,7 @@ namespace ranges
             auto iter_cat(range_access::RandomAccessCursor *) ->
                 ranges::random_access_iterator_tag;
 
-            template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()>
+	  template<typename Cur, bool Readable = (bool) ReadableCursor<Cur>()()>
             struct iterator_associated_types_base
             {
             protected:
@@ -349,8 +349,8 @@ namespace ranges
             using mixin_t::mixin_t;
 
             template<typename T,
-                CONCEPT_REQUIRES_(!Same<detail::decay_t<T>, basic_iterator>() &&
-                    !detail::HasCursorNext<Cur>() && detail::WritableCursor<Cur, T>())>
+		     CONCEPT_REQUIRES_(!Same<detail::decay_t<T>, basic_iterator>()() &&
+				       !detail::HasCursorNext<Cur>()() && detail::WritableCursor<Cur, T>())>
             RANGES_CXX14_CONSTEXPR
             basic_iterator &operator=(T && t)
             noexcept(noexcept(
@@ -360,8 +360,8 @@ namespace ranges
                 return *this;
             }
 
-            CONCEPT_REQUIRES(detail::ReadableCursor<Cur>() &&
-                !detail::is_writable_cursor<Cur>())
+	  CONCEPT_REQUIRES(detail::ReadableCursor<Cur>()() &&
+			   !detail::is_writable_cursor<Cur>()())
             constexpr const_reference_t operator*() const
             noexcept(noexcept(range_access::read(std::declval<Cur const &>())))
             {
@@ -382,7 +382,7 @@ namespace ranges
             {
                 return const_reference_t{pos()};
             }
-            CONCEPT_REQUIRES(!detail::HasCursorNext<Cur>())
+	  CONCEPT_REQUIRES(!detail::HasCursorNext<Cur>()())
             RANGES_CXX14_CONSTEXPR basic_iterator &operator*() noexcept
             {
                 return *this;
@@ -400,7 +400,7 @@ namespace ranges
             // Otherwise, if reference_t is an lvalue reference to cv-qualified
             // value_type_t, return the address of **this.
             template<typename C = Cur,
-                CONCEPT_REQUIRES_(!detail::HasCursorArrow<Cur>() &&
+		     CONCEPT_REQUIRES_(!detail::HasCursorArrow<Cur>()() &&
                     detail::ReadableCursor<Cur>() &&
                     std::is_lvalue_reference<const_reference_t>::value &&
                     Same<typename detail::iterator_associated_types_base<C>::value_type,
@@ -419,7 +419,7 @@ namespace ranges
                 range_access::next(pos());
                 return *this;
             }
-            CONCEPT_REQUIRES(!detail::HasCursorNext<Cur>())
+	  CONCEPT_REQUIRES(!detail::HasCursorNext<Cur>()())
             RANGES_CXX14_CONSTEXPR
             basic_iterator &operator++() noexcept
             {
@@ -671,7 +671,7 @@ namespace ranges
     {
         namespace detail
         {
-            template<typename Cur, bool IsReadable = (bool) ReadableCursor<Cur>()>
+	  template<typename Cur, bool IsReadable = (bool) ReadableCursor<Cur>()()>
             struct std_iterator_traits
             {
                 using iterator_category = std::output_iterator_tag;

@@ -37,7 +37,7 @@ namespace ranges
             {
             private:
                 friend action_access;
-                template<typename Fun, CONCEPT_REQUIRES_(!Range<Fun>())>
+	      template<typename Fun, CONCEPT_REQUIRES_(!Range<Fun>()())>
                 static auto bind(drop_while_fn drop_while, Fun fun)
                 RANGES_DECLTYPE_AUTO_RETURN
                 (
@@ -71,7 +71,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng, typename Fun,
-                    CONCEPT_REQUIRES_(!Concept<Rng, Fun>())>
+			 CONCEPT_REQUIRES_(!Concept<Rng, Fun>()())>
                 void operator()(Rng &&, Fun &&) const
                 {
                     CONCEPT_ASSERT_MSG(ForwardRange<Rng>(),

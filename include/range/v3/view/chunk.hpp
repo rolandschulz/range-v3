@@ -153,7 +153,7 @@ namespace ranges
             #ifndef RANGES_DOXYGEN_INVOKED
             private:
                 template<typename Int,
-                    CONCEPT_REQUIRES_(!Integral<Int>())>
+			 CONCEPT_REQUIRES_(!Integral<Int>()())>
                 static detail::null_pipe bind(chunk_fn, Int)
                 {
                     CONCEPT_ASSERT_MSG(Integral<Int>(),

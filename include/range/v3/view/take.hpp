@@ -101,7 +101,7 @@ namespace ranges
                 friend view_access;
 
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(!SizedRange<Rng>() && !is_infinite<Rng>())>
+			 CONCEPT_REQUIRES_(!SizedRange<Rng>()() && !is_infinite<Rng>()())>
                 static take_view<all_t<Rng>> invoke_(Rng && rng, range_difference_t<Rng> n)
                 {
                     return {all(std::forward<Rng>(rng)), n};
@@ -125,7 +125,7 @@ namespace ranges
                 )
 
             #ifndef RANGES_DOXYGEN_INVOKED
-                template<typename Int, CONCEPT_REQUIRES_(!Integral<Int>())>
+		  template<typename Int, CONCEPT_REQUIRES_(!Integral<Int>()())>
                 static detail::null_pipe bind(take_fn, Int)
                 {
                     CONCEPT_ASSERT_MSG(Integral<Int>(),
@@ -143,7 +143,7 @@ namespace ranges
                 )
 
             #ifndef RANGES_DOXYGEN_INVOKED
-                template<typename Rng, typename T, CONCEPT_REQUIRES_(!InputRange<Rng>())>
+		  template<typename Rng, typename T, CONCEPT_REQUIRES_(!InputRange<Rng>()())>
                 void operator()(Rng &&, T &&) const
                 {
                     CONCEPT_ASSERT_MSG(InputRange<Rng>(),

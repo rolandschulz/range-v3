@@ -37,7 +37,7 @@ namespace ranges
         {
             template<typename Rng>
             struct is_random_access_bounded_
-              : meta::bool_<(bool) RandomAccessRange<Rng>() && (bool) BoundedRange<Rng>()>
+              : meta::bool_<(bool) RandomAccessRange<Rng>()() && (bool) BoundedRange<Rng>()()>
             {};
 
             // BUGBUG Per the discussion in https://github.com/ericniebler/stl2/issues/63, it's
@@ -154,7 +154,7 @@ namespace ranges
                     return {all(std::forward<Rng>(rng)), n};
                 }
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(!View<Rng>() && std::is_lvalue_reference<Rng>())>
+			 CONCEPT_REQUIRES_(!View<Rng>()() && std::is_lvalue_reference<Rng>())>
                 static iterator_range<range_iterator_t<Rng>>
                 invoke_(Rng && rng, range_difference_t<Rng> n, concepts::RandomAccessRange*)
                 {
@@ -170,7 +170,7 @@ namespace ranges
                 )
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Int,
-                    CONCEPT_REQUIRES_(!Integral<Int>())>
+			 CONCEPT_REQUIRES_(!Integral<Int>()())>
                 static detail::null_pipe bind(take_exactly_fn, Int)
                 {
                     CONCEPT_ASSERT_MSG(Integral<Int>(),
@@ -190,7 +190,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng, typename T,
-                    CONCEPT_REQUIRES_(!InputRange<Rng>())>
+			 CONCEPT_REQUIRES_(!InputRange<Rng>()())>
                 void operator()(Rng &&, T &&) const
                 {
                     CONCEPT_ASSERT_MSG(InputRange<T>(),

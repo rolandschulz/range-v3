@@ -251,7 +251,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng, typename T,
-                    CONCEPT_REQUIRES_(!ConvertibleTo<T, range_value_t<Rng>>())>
+			 CONCEPT_REQUIRES_(!ConvertibleTo<T, range_value_t<Rng>>()())>
                 void operator()(Rng &&, T &&) const volatile
                 {
                     CONCEPT_ASSERT_MSG(ForwardRange<Rng>(),

@@ -46,7 +46,7 @@ namespace ranges
         {
             template<typename I, typename S, typename C, typename P = ident,
                 CONCEPT_REQUIRES_(PartitionPointable<I, C, P>() &&
-                    Sentinel<S, I>() && !SizedSentinel<S, I>())>
+				  Sentinel<S, I>() && !SizedSentinel<S, I>()())>
             I operator()(I begin, S end, C pred, P proj = P{}) const
             {
                 // Probe exponentially for either end-of-range or an iterator
@@ -79,7 +79,7 @@ namespace ranges
 
             template<typename Rng, typename C, typename P = ident,
                 typename I = range_iterator_t<Rng>,
-                CONCEPT_REQUIRES_(Range<Rng>() && !SizedRange<Rng>() &&
+		     CONCEPT_REQUIRES_(Range<Rng>() && !SizedRange<Rng>()() &&
                     PartitionPointable<I, C, P>())>
             range_safe_iterator_t<Rng> operator()(Rng && rng, C pred, P proj = P{}) const
             {

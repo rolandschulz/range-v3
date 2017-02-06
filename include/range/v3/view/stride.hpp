@@ -158,7 +158,7 @@ namespace ranges
             // speaking, we don't have to adapt the end iterator of Input and Forward
             // Ranges, but in the interests of making the resulting stride view model
             // BoundedView, adapt it anyway.
-            CONCEPT_REQUIRES(!BoundedRange<Rng>())
+	  CONCEPT_REQUIRES(!BoundedRange<Rng>()())
             adaptor_base end_adaptor() const
             {
                 return {};
@@ -206,7 +206,7 @@ namespace ranges
                 // For the purpose of better error messages:
             #ifndef RANGES_DOXYGEN_INVOKED
             private:
-                template<typename Difference, CONCEPT_REQUIRES_(!Integral<Difference>())>
+	      template<typename Difference, CONCEPT_REQUIRES_(!Integral<Difference>()())>
                 static detail::null_pipe bind(stride_fn, const Difference &)
                 {
                     CONCEPT_ASSERT_MSG(Integral<Difference>(),
@@ -217,7 +217,7 @@ namespace ranges
                 }
             public:
                 template<typename Rng, typename T,
-                    CONCEPT_REQUIRES_(!InputRange<Rng>())>
+			 CONCEPT_REQUIRES_(!InputRange<Rng>()())>
                 void operator()(Rng &&, T &&) const
                 {
                     CONCEPT_ASSERT_MSG(InputRange<Rng>(),

@@ -47,12 +47,12 @@ namespace ranges
             {
                 template<typename I, typename B, typename C = ordered_less, typename P = ident,
                     typename VI = iterator_common_reference_t<I>,
-                    typename VB = iterator_common_reference_t<B>,
+                    typename VB = iterator_common_reference_t<B> /*ICC-DISABLED ,
                     CONCEPT_REQUIRES_(
                         Same<VI, VB>() &&
                         IndirectlyCopyable<I, B>() &&
                         Mergeable<B, I, I, C, P, P>()
-                    )>
+			)*/>
                 I operator()(I begin, iterator_difference_t<I> n, B buff, C r = C{}, P p = P{}) const
                 {
                     auto half = n / 2;

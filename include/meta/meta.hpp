@@ -153,7 +153,7 @@ namespace meta
             /// \sa `meta::_t`
             /// \ingroup lazy_invocation
             template <typename T>
-            using _t = defer<_t, T>;
+            using _t = defer<v1::_t, T>;
         }
 
         /// An integral constant wrapper for \c std::size_t.
@@ -315,92 +315,92 @@ namespace meta
             /// \sa 'meta::int'
             /// \ingroup lazy_math
             template <typename T>
-            using inc = defer<inc, T>;
+            using inc = defer<v1::inc, T>;
 
             /// \sa 'meta::dec'
             /// \ingroup lazy_math
             template <typename T>
-            using dec = defer<dec, T>;
+            using dec = defer<v1::dec, T>;
 
             /// \sa 'meta::plus'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using plus = defer<plus, T, U>;
+            using plus = defer<v1::plus, T, U>;
 
             /// \sa 'meta::minus'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using minus = defer<minus, T, U>;
+            using minus = defer<v1::minus, T, U>;
 
             /// \sa 'meta::multiplies'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using multiplies = defer<multiplies, T, U>;
+            using multiplies = defer<v1::multiplies, T, U>;
 
             /// \sa 'meta::divides'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using divides = defer<divides, T, U>;
+            using divides = defer<v1::divides, T, U>;
 
             /// \sa 'meta::negate'
             /// \ingroup lazy_math
             template <typename T>
-            using negate = defer<negate, T>;
+            using negate = defer<v1::negate, T>;
 
             /// \sa 'meta::modulus'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using modulus = defer<modulus, T, U>;
+            using modulus = defer<v1::modulus, T, U>;
 
             /// \sa 'meta::equal_to'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using equal_to = defer<equal_to, T, U>;
+            using equal_to = defer<v1::equal_to, T, U>;
 
             /// \sa 'meta::not_equal_t'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using not_equal_to = defer<not_equal_to, T, U>;
+            using not_equal_to = defer<v1::not_equal_to, T, U>;
 
             /// \sa 'meta::greater'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using greater = defer<greater, T, U>;
+            using greater = defer<v1::greater, T, U>;
 
             /// \sa 'meta::less'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using less = defer<less, T, U>;
+            using less = defer<v1::less, T, U>;
 
             /// \sa 'meta::greater_equal'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using greater_equal = defer<greater_equal, T, U>;
+            using greater_equal = defer<v1::greater_equal, T, U>;
 
             /// \sa 'meta::less_equal'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using less_equal = defer<less_equal, T, U>;
+            using less_equal = defer<v1::less_equal, T, U>;
 
             /// \sa 'meta::bit_and'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using bit_and = defer<bit_and, T, U>;
+            using bit_and = defer<v1::bit_and, T, U>;
 
             /// \sa 'meta::bit_or'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using bit_or = defer<bit_or, T, U>;
+            using bit_or = defer<v1::bit_or, T, U>;
 
             /// \sa 'meta::bit_xor'
             /// \ingroup lazy_math
             template <typename T, typename U>
-            using bit_xor = defer<bit_xor, T, U>;
+            using bit_xor = defer<v1::bit_xor, T, U>;
 
             /// \sa 'meta::bit_not'
             /// \ingroup lazy_math
             template <typename T>
-            using bit_not = defer<bit_not, T>;
+            using bit_not = defer<v1::bit_not, T>;
         }
 
         /// \cond
@@ -565,7 +565,7 @@ namespace meta
             /// \sa `meta::invoke`
             /// \ingroup lazy_invocation
             template <typename F, typename... Args>
-            using invoke = defer<invoke, F, Args...>;
+            using invoke = defer<v1::invoke, F, Args...>;
         }
 
         /// A trait that always returns its argument \p T. Also, a Callable that always
@@ -600,7 +600,7 @@ namespace meta
             /// \ingroup lazy_trait
             /// \ingroup lazy_invocation
             template <typename T>
-            using id = defer<id, T>;
+            using id = defer<v1::id, T>;
         }
 
         /// An alias for `void`.
@@ -766,12 +766,12 @@ namespace meta
             /// \sa `meta::sizeof_`
             /// \ingroup lazy_trait
             template <typename T>
-            using sizeof_ = defer<sizeof_, T>;
+            using sizeof_ = defer<v1::sizeof_, T>;
 
             /// \sa `meta::alignof_`
             /// \ingroup lazy_trait
             template <typename T>
-            using alignof_ = defer<alignof_, T>;
+            using alignof_ = defer<v1::alignof_, T>;
         }
 
         /// is
@@ -807,14 +807,14 @@ namespace meta
         struct compose<F0>
         {
             template <typename... Ts>
-            using invoke = invoke<F0, Ts...>;
+            using invoke = v1::invoke<F0, Ts...>;
         };
 
         template <typename F0, typename... Fs>
         struct compose<F0, Fs...>
         {
             template <typename... Ts>
-            using invoke = invoke<F0, invoke<compose<Fs...>, Ts...>>;
+            using invoke = v1::invoke<F0, v1::invoke<compose<Fs...>, Ts...>>;
         };
 
         namespace lazy
@@ -822,7 +822,7 @@ namespace meta
             /// \sa 'meta::compose'
             /// \ingroup lazy_composition
             template <typename... Fns>
-            using compose = defer<compose, Fns...>;
+            using compose = defer<v1::compose, Fns...>;
         }
 
         /// Turn a class template or alias template \p C into a Callable.
@@ -887,7 +887,7 @@ namespace meta
         struct bind_front
         {
             template <typename... Us>
-            using invoke = invoke<F, Ts..., Us...>;
+            using invoke = v1::invoke<F, Ts..., Us...>;
         };
 
         /// A Callable that partially applies the Callable \p F by binding the
@@ -897,7 +897,7 @@ namespace meta
         struct bind_back
         {
             template <typename... Ts>
-            using invoke = invoke<F, Ts..., Us...>;
+            using invoke = v1::invoke<F, Ts..., Us...>;
         };
 
         namespace lazy
@@ -905,12 +905,12 @@ namespace meta
             /// \sa 'meta::bind_front'
             /// \ingroup lazy_composition
             template <typename Fn, typename... Ts>
-            using bind_front = defer<bind_front, Fn, Ts...>;
+            using bind_front = defer<v1::bind_front, Fn, Ts...>;
 
             /// \sa 'meta::bind_back'
             /// \ingroup lazy_composition
             template <typename Fn, typename... Ts>
-            using bind_back = defer<bind_back, Fn, Ts...>;
+            using bind_back = defer<v1::bind_back, Fn, Ts...>;
         }
 
         /// Extend meta with your own datatypes.
@@ -950,7 +950,7 @@ namespace meta
         namespace lazy
         {
             template <typename F, typename List>
-            using apply = defer<apply, F, List>;
+            using apply = defer<v1::apply, F, List>;
         }
 
         /// A Callable that takes a bunch of arguments, bundles them into a type list,
@@ -971,12 +971,12 @@ namespace meta
             /// \sa 'meta::curry'
             /// \ingroup lazy_composition
             template <typename F, typename Q = quote<list>>
-            using curry = defer<curry, F, Q>;
+            using curry = defer<v1::curry, F, Q>;
 
             /// \sa 'meta::uncurry'
             /// \ingroup lazy_composition
             template <typename F>
-            using uncurry = defer<uncurry, F>;
+            using uncurry = defer<v1::uncurry, F>;
         }
 
         /// A Callable that reverses the order of the first two arguments.
@@ -1004,7 +1004,7 @@ namespace meta
             /// \sa 'meta::flip'
             /// \ingroup lazy_composition
             template <typename F>
-            using flip = defer<flip, F>;
+            using flip = defer<v1::flip, F>;
         }
 
         /// \cond
@@ -1018,7 +1018,7 @@ namespace meta
             struct on_<F, Gs...>
             {
                 template <typename... Ts>
-                using invoke = invoke<F, invoke<compose<Gs...>, Ts>...>;
+                using invoke = v1::invoke<F, v1::invoke<compose<Gs...>, Ts>...>;
             };
         }
         /// \endcond
@@ -1034,7 +1034,7 @@ namespace meta
             /// \sa 'meta::on'
             /// \ingroup lazy_composition
             template <typename F, typename G>
-            using on = defer<on, F, G>;
+            using on = defer<v1::on, F, G>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1114,7 +1114,7 @@ namespace meta
             /// \sa 'meta::if_'
             /// \ingroup lazy_logical
             template <typename... Args>
-            using if_ = defer<if_, Args...>;
+            using if_ = defer<v1::if_, Args...>;
 
             /// \sa 'meta::if_c'
             /// \ingroup lazy_logical
@@ -1217,27 +1217,27 @@ namespace meta
             /// \sa 'meta::and_'
             /// \ingroup lazy_logical
             template <typename... Bools>
-            using and_ = defer<and_, Bools...>;
+            using and_ = defer<v1::and_, Bools...>;
 
             /// \sa 'meta::or_'
             /// \ingroup lazy_logical
             template <typename... Bools>
-            using or_ = defer<or_, Bools...>;
+            using or_ = defer<v1::or_, Bools...>;
 
             /// \sa 'meta::not_'
             /// \ingroup lazy_logical
             template <typename Bool_>
-            using not_ = defer<not_, Bool_>;
+            using not_ = defer<v1::not_, Bool_>;
 
             /// \sa 'meta::strict_and'
             /// \ingroup lazy_logical
             template <typename... Bools>
-            using strict_and = defer<strict_and, Bools...>;
+            using strict_and = defer<v1::strict_and, Bools...>;
 
             /// \sa 'meta::strict_or'
             /// \ingroup lazy_logical
             template <typename... Bools>
-            using strict_or = defer<strict_or, Bools...>;
+            using strict_or = defer<v1::strict_or, Bools...>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1249,7 +1249,7 @@ namespace meta
             struct compose1_
             {
                 template <typename X>
-                using invoke = invoke<Fun, _t<X>, T0>;
+                using invoke = v1::invoke<Fun, _t<X>, T0>;
             };
 
             template <typename Fun, typename T0, typename T1, typename T2, typename T3, typename T4,
@@ -1257,7 +1257,7 @@ namespace meta
             struct compose10_
             {
                 template <typename X, typename Y>
-                using F = invoke<Fun, X, Y>;
+                using F = v1::invoke<Fun, X, Y>;
 
                 template <typename S>
                 using invoke =
@@ -1314,12 +1314,12 @@ namespace meta
             /// \sa 'meta::foldl'
             /// \ingroup lazy_transformation
             template <typename List, typename State, typename Fun>
-            using fold = defer<fold, List, State, Fun>;
+            using fold = defer<v1::fold, List, State, Fun>;
 
             /// \sa 'meta::accumulate'
             /// \ingroup lazy_transformation
             template <typename List, typename State, typename Fun>
-            using accumulate = defer<accumulate, List, State, Fun>;
+            using accumulate = defer<v1::accumulate, List, State, Fun>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1369,7 +1369,7 @@ namespace meta
             /// \sa 'meta::foldr'
             /// \ingroup lazy_transformation
             template <typename List, typename State, typename Fun>
-            using reverse_fold = defer<reverse_fold, List, State, Fun>;
+            using reverse_fold = defer<v1::reverse_fold, List, State, Fun>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1405,7 +1405,7 @@ namespace meta
             /// \sa 'meta::size'
             /// \ingroup lazy_list
             template <typename List>
-            using size = defer<size, List>;
+            using size = defer<v1::size, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1463,7 +1463,7 @@ namespace meta
             /// \sa 'meta::concat'
             /// \ingroup lazy_transformation
             template <typename... Lists>
-            using concat = defer<concat, Lists...>;
+            using concat = defer<v1::concat, Lists...>;
         }
 
         /// Joins a list of lists into a single list.
@@ -1481,7 +1481,7 @@ namespace meta
             /// \sa 'meta::join'
             /// \ingroup lazy_transformation
             template <typename ListOfLists>
-            using join = defer<join, ListOfLists>;
+            using join = defer<v1::join, ListOfLists>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1527,7 +1527,7 @@ namespace meta
             /// \sa 'meta::transform'
             /// \ingroup lazy_transformation
             template <typename... Args>
-            using transform = defer<transform, Args...>;
+            using transform = defer<v1::transform, Args...>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1570,12 +1570,12 @@ namespace meta
             /// \sa 'meta::repeat_n'
             /// \ingroup lazy_list
             template <typename N, typename T = void>
-            using repeat_n = defer<repeat_n, N, T>;
+            using repeat_n = defer<v1::repeat_n, N, T>;
 
             /// \sa 'meta::repeat_n_c'
             /// \ingroup lazy_list
             template <std::size_t N, typename T = void>
-            using repeat_n_c = defer<repeat_n, meta::size_t<N>, T>;
+            using repeat_n_c = defer<v1::repeat_n, meta::size_t<N>, T>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1629,7 +1629,7 @@ namespace meta
             /// \sa 'meta::at'
             /// \ingroup lazy_list
             template <typename List, typename N>
-            using at = defer<at, List, N>;
+            using at = defer<v1::at, List, N>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1693,7 +1693,7 @@ namespace meta
             /// \sa 'meta::drop'
             /// \ingroup lazy_transformation
             template <typename List, typename N>
-            using drop = defer<drop, List, N>;
+            using drop = defer<v1::drop, List, N>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1726,7 +1726,7 @@ namespace meta
             /// \sa 'meta::front'
             /// \ingroup lazy_list
             template <typename List>
-            using front = defer<front, List>;
+            using front = defer<v1::front, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1759,7 +1759,7 @@ namespace meta
             /// \sa 'meta::back'
             /// \ingroup lazy_list
             template <typename List>
-            using back = defer<back, List>;
+            using back = defer<v1::back, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1793,7 +1793,7 @@ namespace meta
             /// \sa 'meta::push_front'
             /// \ingroup lazy_transformation
             template <typename List, typename T>
-            using push_front = defer<push_front, List, T>;
+            using push_front = defer<v1::push_front, List, T>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1827,7 +1827,7 @@ namespace meta
             /// \sa 'meta::pop_front'
             /// \ingroup lazy_transformation
             template <typename List>
-            using pop_front = defer<pop_front, List>;
+            using pop_front = defer<v1::pop_front, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1863,7 +1863,7 @@ namespace meta
             /// \sa 'meta::push_back'
             /// \ingroup lazy_transformation
             template <typename List, typename T>
-            using push_back = defer<push_back, List, T>;
+            using push_back = defer<v1::push_back, List, T>;
         }
 
         /// \cond
@@ -1892,12 +1892,12 @@ namespace meta
             /// \sa 'meta::min'
             /// \ingroup lazy_math
             template <typename... Ts>
-            using min = defer<min, Ts...>;
+            using min = defer<v1::min, Ts...>;
 
             /// \sa 'meta::max'
             /// \ingroup lazy_math
             template <typename... Ts>
-            using max = defer<max, Ts...>;
+            using max = defer<v1::max, Ts...>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1916,7 +1916,7 @@ namespace meta
             /// \sa 'meta::empty'
             /// \ingroup lazy_list
             template <typename List>
-            using empty = defer<empty, List>;
+            using empty = defer<v1::empty, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1941,12 +1941,12 @@ namespace meta
             /// \sa 'meta::first'
             /// \ingroup lazy_list
             template <typename Pair>
-            using first = defer<first, Pair>;
+            using first = defer<v1::first, Pair>;
 
             /// \sa 'meta::second'
             /// \ingroup lazy_list
             template <typename Pair>
-            using second = defer<second, Pair>;
+            using second = defer<v1::second, Pair>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2006,7 +2006,7 @@ namespace meta
             /// \sa 'meta::find_index'
             /// \ingroup lazy_query
             template <typename List, typename T>
-            using find_index = defer<find_index, List, T>;
+            using find_index = defer<v1::find_index, List, T>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2067,7 +2067,7 @@ namespace meta
             /// \sa 'meta::reverse_find_index'
             /// \ingroup lazy_query
             template <typename List, typename T>
-            using reverse_find_index = defer<reverse_find_index, List, T>;
+            using reverse_find_index = defer<v1::reverse_find_index, List, T>;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
@@ -2086,7 +2086,7 @@ namespace meta
             /// \sa 'meta::find'
             /// \ingroup lazy_query
             template <typename List, typename T>
-            using find = defer<find, List, T>;
+            using find = defer<v1::find, List, T>;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
@@ -2105,7 +2105,7 @@ namespace meta
             /// \sa 'meta::rfind'
             /// \ingroup lazy_query
             template <typename List, typename T>
-            using reverse_find = defer<reverse_find, List, T>;
+            using reverse_find = defer<v1::reverse_find, List, T>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2133,7 +2133,7 @@ namespace meta
             struct find_if_<list<List...>, Fun,
                             void_<integer_sequence<bool, bool(invoke<Fun, List>::type::value)...>>>
             {
-              #if defined(__clang__) && __cplusplus > 201402L
+#if defined(__ICC) || (defined(__clang__) && __cplusplus > 201402L)
                 // work-around clang bug: https://llvm.org/bugs/show_bug.cgi?id=28385
                 static constexpr std::size_t index_() {
                     constexpr bool s_v[] = {invoke<Fun, List>::type::value...};
@@ -2165,7 +2165,7 @@ namespace meta
             /// \sa 'meta::find_if'
             /// \ingroup lazy_query
             template <typename List, typename Fun>
-            using find_if = defer<find_if, List, Fun>;
+            using find_if = defer<v1::find_if, List, Fun>;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
@@ -2231,7 +2231,7 @@ namespace meta
             /// \sa 'meta::rfind_if'
             /// \ingroup lazy_query
             template <typename List, typename Fun>
-            using reverse_find_if = defer<reverse_find_if, List, Fun>;
+            using reverse_find_if = defer<v1::reverse_find_if, List, Fun>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2266,7 +2266,7 @@ namespace meta
             /// \sa 'meta::replace'
             /// \ingroup lazy_transformation
             template <typename List, typename T, typename U>
-            using replace = defer<replace, T, U>;
+            using replace = defer<v1::replace, T, U>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2302,7 +2302,7 @@ namespace meta
             /// \sa 'meta::replace_if'
             /// \ingroup lazy_transformation
             template <typename List, typename C, typename U>
-            using replace_if = defer<replace_if, C, U>;
+            using replace_if = defer<v1::replace_if, C, U>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////
@@ -2355,7 +2355,7 @@ namespace meta
             /// \sa `meta::count`
             /// \ingroup lazy_query
             template <typename List, typename T>
-            using count = defer<count, List, T>;
+            using count = defer<v1::count, List, T>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////
@@ -2405,7 +2405,7 @@ namespace meta
             /// \sa `meta::count_if`
             /// \ingroup lazy_query
             template <typename List, typename Fn>
-            using count_if = defer<count_if, List, Fn>;
+            using count_if = defer<v1::count_if, List, Fn>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2417,7 +2417,7 @@ namespace meta
             struct filter_
             {
                 template <typename A>
-                using invoke = if_c<invoke<Pred, A>::type::value, list<A>, list<>>;
+                using invoke = if_c<v1::invoke<Pred, A>::type::value, list<A>, list<>>;
             };
         } // namespace detail
         /// \endcond
@@ -2437,7 +2437,7 @@ namespace meta
             /// \sa 'meta::filter'
             /// \ingroup lazy_transformation
             template <typename List, typename Pred>
-            using filter = defer<filter, List, Pred>;
+            using filter = defer<v1::filter, List, Pred>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2505,7 +2505,7 @@ namespace meta
             /// \sa 'meta::transpose'
             /// \ingroup lazy_transformation
             template <typename ListOfLists>
-            using transpose = defer<transpose, ListOfLists>;
+            using transpose = defer<v1::transpose, ListOfLists>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2525,7 +2525,7 @@ namespace meta
             /// \sa 'meta::zip_with'
             /// \ingroup lazy_transformation
             template <typename Fun, typename ListOfLists>
-            using zip_with = defer<zip_with, Fun, ListOfLists>;
+            using zip_with = defer<v1::zip_with, Fun, ListOfLists>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2546,7 +2546,7 @@ namespace meta
             /// \sa 'meta::zip'
             /// \ingroup lazy_transformation
             template <typename ListOfLists>
-            using zip = defer<zip, ListOfLists>;
+            using zip = defer<v1::zip, ListOfLists>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2577,7 +2577,7 @@ namespace meta
             /// \sa 'meta::as_list'
             /// \ingroup lazy_list
             template <typename Sequence>
-            using as_list = defer<as_list, Sequence>;
+            using as_list = defer<v1::as_list, Sequence>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2612,7 +2612,7 @@ namespace meta
             /// \sa 'meta::reverse'
             /// \ingroup lazy_transformation
             template <typename List>
-            using reverse = defer<reverse, List>;
+            using reverse = defer<v1::reverse, List>;
         }
 
         /// Logically negate the result of Callable \p F.
@@ -2625,7 +2625,7 @@ namespace meta
             /// \sa 'meta::not_fn'
             /// \ingroup lazy_trait
             template <typename F>
-            using not_fn = defer<not_fn, F>;
+            using not_fn = defer<v1::not_fn, F>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2644,7 +2644,7 @@ namespace meta
             /// \sa 'meta::all_of'
             /// \ingroup lazy_query
             template <typename List, typename Fn>
-            using all_of = defer<all_of, List, Fn>;
+            using all_of = defer<v1::all_of, List, Fn>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2663,7 +2663,7 @@ namespace meta
             /// \sa 'meta::any_of'
             /// \ingroup lazy_query
             template <typename List, typename Fn>
-            using any_of = defer<any_of, List, Fn>;
+            using any_of = defer<v1::any_of, List, Fn>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2683,7 +2683,7 @@ namespace meta
             /// \sa 'meta::none_of'
             /// \ingroup lazy_query
             template <typename List, typename Fn>
-            using none_of = defer<none_of, List, Fn>;
+            using none_of = defer<v1::none_of, List, Fn>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2702,7 +2702,7 @@ namespace meta
             /// \sa 'meta::in'
             /// \ingroup lazy_query
             template <typename List, typename T>
-            using in = defer<in, List, T>;
+            using in = defer<v1::in, List, T>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2735,7 +2735,7 @@ namespace meta
             /// \sa 'meta::inherit'
             /// \ingroup lazy_datatype
             template <typename List>
-            using inherit = defer<inherit, List>;
+            using inherit = defer<v1::inherit, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2781,7 +2781,7 @@ namespace meta
             /// \sa 'meta::unique'
             /// \ingroup lazy_transformation
             template <typename List>
-            using unique = defer<unique, List>;
+            using unique = defer<v1::unique, List>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2824,7 +2824,7 @@ namespace meta
             /// \sa 'meta::partition'
             /// \ingroup lazy_transformation
             template <typename List, typename Pred>
-            using partition = defer<partition, List, Pred>;
+            using partition = defer<v1::partition, List, Pred>;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2880,7 +2880,7 @@ namespace meta
             /// \sa 'meta::sort'
             /// \ingroup lazy_transformation
             template <typename List, typename Pred>
-            using sort = defer<sort, List, Pred>;
+            using sort = defer<v1::sort, List, Pred>;
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -3129,7 +3129,7 @@ namespace meta
 
             public:
                 template <typename... Ts>
-                using invoke = invoke<thunk, substitutions<Tags, list<Ts...>>>;
+                using invoke = v1::invoke<thunk, substitutions<Tags, list<Ts...>>>;
             };
         }
         /// \endcond
@@ -3220,7 +3220,7 @@ namespace meta
             /// \sa `meta::let`
             /// \ingroup lazy_trait
             template <typename... As>
-            using let = defer<let, As...>;
+            using let = defer<v1::let, As...>;
         }
 
         // Some argument placeholders for use in \c lambda expressions.
@@ -3281,7 +3281,7 @@ namespace meta
             /// \sa 'meta::cartesian_product'
             /// \ingroup lazy_transformation
             template <typename ListOfLists>
-            using cartesian_product = defer<cartesian_product, ListOfLists>;
+            using cartesian_product = defer<v1::cartesian_product, ListOfLists>;
         }
 
         /// \cond

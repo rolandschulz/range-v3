@@ -204,7 +204,7 @@ namespace ranges
                     return {all(std::forward<Rng>(rng)), from, count};
                 }
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(!View<Rng>() && std::is_lvalue_reference<Rng>())>
+			 CONCEPT_REQUIRES_(!View<Rng>()() && std::is_lvalue_reference<Rng>())>
                 static iterator_range<range_iterator_t<Rng>>
                 invoke_(Rng && rng, range_difference_t<Rng> from, range_difference_t<Rng> count,
                     concepts::RandomAccessRange *, concepts::BoundedRange * = nullptr)
@@ -326,7 +326,7 @@ namespace ranges
 
                 // slice(rng, 2, 4)
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(!InputRange<Rng>())>
+			 CONCEPT_REQUIRES_(!InputRange<Rng>()())>
                 void operator()(Rng &&, range_difference_t<Rng>, range_difference_t<Rng>) const
                 {
                     CONCEPT_ASSERT_MSG(InputRange<Rng>(),
@@ -361,7 +361,7 @@ namespace ranges
                 }
                 // slice(rng, 4, end)
                 template<typename Rng,
-                    CONCEPT_REQUIRES_(!(InputRange<Rng>()))>
+			 CONCEPT_REQUIRES_(!(InputRange<Rng>()()))>
                 void operator()(Rng &&, range_difference_t<Rng>, end_fn) const
                 {
                     CONCEPT_ASSERT_MSG(InputRange<Rng>(),

@@ -76,7 +76,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Rng, typename T, typename U,
-                    CONCEPT_REQUIRES_(!Concept<Rng, T, U>())>
+			 CONCEPT_REQUIRES_(!Concept<Rng, T, U>()())>
                 void operator()(Rng &&, T &&, U &&) const
                 {
                     CONCEPT_ASSERT_MSG(ForwardRange<Rng>(),

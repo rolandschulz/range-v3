@@ -386,7 +386,7 @@ namespace ranges
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename From,
-                    CONCEPT_REQUIRES_(!WeaklyIncrementable<From>())>
+			 CONCEPT_REQUIRES_(!WeaklyIncrementable<From>()())>
                 void operator()(From) const
                 {
                     CONCEPT_ASSERT_MSG(WeaklyIncrementable<From>(),
@@ -496,20 +496,20 @@ namespace ranges
                 }
                 template<typename Val>
                 meta::if_c<
-                    (bool)Integral<Val>(),
+                    (bool)Integral<Val>()(),
                     detail::take_exactly_view_<iota_view<Val>, true>>
                 operator()(Val from, Val to) const;
 
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Val,
-                    CONCEPT_REQUIRES_(!Integral<Val>())>
+			 CONCEPT_REQUIRES_(!Integral<Val>()())>
                 void operator()(Val) const
                 {
                     CONCEPT_ASSERT_MSG(Integral<Val>(),
                         "The object passed to view::ints must be Integral");
                 }
                 template<typename Val,
-                    CONCEPT_REQUIRES_(!Integral<Val>())>
+			 CONCEPT_REQUIRES_(!Integral<Val>()())>
                 void operator()(Val, Val) const
                 {
                     CONCEPT_ASSERT_MSG(Integral<Val>(),
@@ -520,7 +520,7 @@ namespace ranges
 
             template<typename Val>
             meta::if_c<
-                (bool)Integral<Val>(),
+                (bool)Integral<Val>()(),
                 detail::take_exactly_view_<iota_view<Val>, true>>
             ints_fn::operator()(Val from, Val to) const
             {
@@ -537,7 +537,7 @@ namespace ranges
                 }
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Val,
-                    CONCEPT_REQUIRES_(!Integral<Val>())>
+			 CONCEPT_REQUIRES_(!Integral<Val>()())>
                 void operator()(Val, Val) const
                 {
                     CONCEPT_ASSERT_MSG(Integral<Val>(),

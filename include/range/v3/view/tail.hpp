@@ -104,7 +104,7 @@ namespace ranges
                 }
 
             #ifndef RANGES_DOXYGEN_INVOKED
-                template<typename Rng, CONCEPT_REQUIRES_(!InputRange<Rng>())>
+	      template<typename Rng, CONCEPT_REQUIRES_(!InputRange<Rng>()())>
                 void operator()(Rng &&) const
                 {
                     CONCEPT_ASSERT_MSG(InputRange<Rng>(),

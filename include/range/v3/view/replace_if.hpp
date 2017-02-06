@@ -60,7 +60,7 @@ namespace ranges
                 }
 
                 template<typename I,
-                    CONCEPT_REQUIRES_(!Invocable<Pred const&, iterator_reference_t<I>>())>
+			 CONCEPT_REQUIRES_(!Invocable<Pred const&, iterator_reference_t<I>>()())>
                 common_reference_t<unwrap_reference_t<Val const &>, iterator_reference_t<I>>
                 operator()(I const &i)
                 {
@@ -81,7 +81,7 @@ namespace ranges
                 }
 
                 template<typename I,
-                    CONCEPT_REQUIRES_(!Invocable<Pred const&, iterator_rvalue_reference_t<I>>())>
+			 CONCEPT_REQUIRES_(!Invocable<Pred const&, iterator_rvalue_reference_t<I>>()())>
                 common_reference_t<unwrap_reference_t<Val const &>, iterator_rvalue_reference_t<I>>
                 operator()(move_tag, I const &i)
                 {

@@ -163,7 +163,7 @@ namespace ranges
                 using difference_type =
                     common_type_t<range_difference_t<Rngs>...>;
                 using single_pass =
-                    meta::or_c<(bool) SinglePass<range_iterator_t<Rngs>>()...>;
+		  meta::or_c<(bool) SinglePass<range_iterator_t<Rngs>>()()...>;
                 using value_type =
                     detail::decay_t<decltype(invoke(fun_, copy_tag{}, range_iterator_t<Rngs>{}...))>;
 
@@ -180,7 +180,7 @@ namespace ranges
                 {
                     tuple_for_each(its_, detail::inc);
                 }
-                CONCEPT_REQUIRES(meta::and_c<(bool) Sentinel<range_iterator_t<Rngs>, range_iterator_t<Rngs>>()...>::value)
+	      CONCEPT_REQUIRES(meta::and_c<(bool) Sentinel<range_iterator_t<Rngs>, range_iterator_t<Rngs>>()()...>::value)
                 bool equal(cursor const &that) const
                 {
                     // By returning true if *any* of the iterators are equal, we allow
@@ -201,19 +201,19 @@ namespace ranges
                         false,
                         [](bool a, bool b) { return a || b; });
                 }
-                CONCEPT_REQUIRES(meta::and_c<(bool) BidirectionalRange<Rngs>()...>::value)
+	      CONCEPT_REQUIRES(meta::and_c<(bool) BidirectionalRange<Rngs>()()...>::value)
                 void prev()
                 {
                     tuple_for_each(its_, detail::dec);
                 }
-                CONCEPT_REQUIRES(meta::and_c<(bool) RandomAccessRange<Rngs>()...>::value)
+	      CONCEPT_REQUIRES(meta::and_c<(bool) RandomAccessRange<Rngs>()()...>::value)
                 void advance(difference_type n)
                 {
                     using std::placeholders::_1;
                     tuple_for_each(its_, std::bind(detail::advance_, _1, n));
                 }
                 CONCEPT_REQUIRES(meta::and_c<(bool)
-                    SizedSentinel<range_iterator_t<Rngs>, range_iterator_t<Rngs>>()...>::value)
+				 SizedSentinel<range_iterator_t<Rngs>, range_iterator_t<Rngs>>()()...>::value)
                 difference_type distance_to(cursor const &that) const
                 {
                     // Return the smallest distance (in magnitude) of any of the iterator
@@ -248,8 +248,8 @@ namespace ranges
             using end_cursor_t =
                 meta::if_<
                     meta::and_c<
-                        meta::and_c<(bool) BoundedRange<Rngs>()...>::value,
-                        !SinglePass<range_iterator_t<Rngs>>()...>,
+		      meta::and_c<(bool) BoundedRange<Rngs>()()...>::value,
+		      !SinglePass<range_iterator_t<Rngs>>()()...>,
                     cursor,
                     sentinel>;
 
@@ -261,12 +261,12 @@ namespace ranges
             {
                 return {fun_, tuple_transform(rngs_, end)};
             }
-            CONCEPT_REQUIRES(meta::and_c<(bool) Range<Rngs const>()...>::value)
+	  CONCEPT_REQUIRES(meta::and_c<(bool) Range<Rngs const>()()...>::value)
             cursor begin_cursor() const
             {
                 return {fun_, tuple_transform(rngs_, begin)};
             }
-            CONCEPT_REQUIRES(meta::and_c<(bool) Range<Rngs const>()...>::value)
+	  CONCEPT_REQUIRES(meta::and_c<(bool) Range<Rngs const>()()...>::value)
             end_cursor_t end_cursor() const
             {
                 return {fun_, tuple_transform(rngs_, end)};
@@ -281,7 +281,7 @@ namespace ranges
               : fun_(std::move(fun))
               , rngs_{std::move(rngs)...}
             {}
-            CONCEPT_REQUIRES(meta::and_c<(bool) SizedRange<Rngs>()...>::value)
+	  CONCEPT_REQUIRES(meta::and_c<(bool) SizedRange<Rngs>()()...>::value)
             constexpr size_type_ size() const
             {
                 return range_cardinality<iter_zip_with_view>::value >= 0 ?

@@ -270,12 +270,12 @@ namespace ranges
                     return its_.index() == cranges - 1 &&
                         ranges::get<cranges - 1>(its_) == pos.end_;
                 }
-                CONCEPT_REQUIRES(meta::and_c<(bool)BidirectionalRange<Rngs>()...>::value)
+                CONCEPT_REQUIRES(meta::and_c<(bool)BidirectionalRange<Rngs>()()...>::value)
                 void prev()
                 {
                     its_.visit_i(prev_fun{this});
                 }
-                CONCEPT_REQUIRES(meta::and_c<(bool)RandomAccessRange<Rngs>()...>::value)
+                CONCEPT_REQUIRES(meta::and_c<(bool)RandomAccessRange<Rngs>()()...>::value)
                 void advance(difference_type n)
                 {
                     if(n > 0)
@@ -284,7 +284,7 @@ namespace ranges
                         its_.visit_i(advance_rev_fun{this, n});
                 }
                 CONCEPT_REQUIRES(meta::and_c<(bool)
-                    SizedSentinel<range_iterator_t<Rngs>, range_iterator_t<Rngs>>()...>::value)
+                    SizedSentinel<range_iterator_t<Rngs>, range_iterator_t<Rngs>>()()...>::value)
                 difference_type distance_to(cursor const &that) const
                 {
                     if(its_.index() <= that.its_.index())
@@ -296,18 +296,18 @@ namespace ranges
             {
                 return {*this, begin_tag{}};
             }
-            meta::if_<meta::and_c<(bool)BoundedRange<Rngs>()...>, cursor<false>, sentinel<false>>
+            meta::if_<meta::and_c<(bool)BoundedRange<Rngs>()()...>, cursor<false>, sentinel<false>>
             end_cursor()
             {
                 return {*this, end_tag{}};
             }
-            CONCEPT_REQUIRES(meta::and_c<(bool)Range<Rngs const>()...>())
+            CONCEPT_REQUIRES(meta::and_c<(bool)Range<Rngs const>()()...>())
             cursor<true> begin_cursor() const
             {
                 return {*this, begin_tag{}};
             }
-            CONCEPT_REQUIRES(meta::and_c<(bool)Range<Rngs const>()...>())
-            meta::if_<meta::and_c<(bool)BoundedRange<Rngs>()...>, cursor<true>, sentinel<true>>
+            CONCEPT_REQUIRES(meta::and_c<(bool)Range<Rngs const>()()...>())
+            meta::if_<meta::and_c<(bool)BoundedRange<Rngs>()()...>, cursor<true>, sentinel<true>>
             end_cursor() const
             {
                 return {*this, end_tag{}};
@@ -317,7 +317,7 @@ namespace ranges
             explicit concat_view(Rngs...rngs)
               : rngs_{std::move(rngs)...}
             {}
-            CONCEPT_REQUIRES(meta::and_c<(bool)SizedRange<Rngs>()...>::value)
+            CONCEPT_REQUIRES(meta::and_c<(bool)SizedRange<Rngs>()()...>::value)
             constexpr size_type_ size() const
             {
                 return range_cardinality<concat_view>::value >= 0 ?

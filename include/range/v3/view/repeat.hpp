@@ -99,7 +99,7 @@ namespace ranges
                 }
             #ifndef RANGES_DOXYGEN_INVOKED
                 template<typename Val,
-                    CONCEPT_REQUIRES_(!SemiRegular<Val>())>
+			 CONCEPT_REQUIRES_(!SemiRegular<Val>()())>
                 void operator()(Val) const
                 {
                     CONCEPT_ASSERT_MSG(SemiRegular<Val>(),

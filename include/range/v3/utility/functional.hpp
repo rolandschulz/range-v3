@@ -700,7 +700,7 @@ namespace ranges
 
         // Evaluate the pipe with an argument
         template<typename Arg, typename Pipe,
-            CONCEPT_REQUIRES_(!is_pipeable<Arg>() && is_pipeable<Pipe>())>
+		 CONCEPT_REQUIRES_(!is_pipeable<Arg>()() && is_pipeable<Pipe>())>
         auto operator|(Arg && arg, Pipe pipe)
         RANGES_DECLTYPE_AUTO_RETURN
         (
@@ -793,7 +793,7 @@ namespace ranges
 
         struct unwrap_reference_fn : pipeable<unwrap_reference_fn>
         {
-            template<typename T, CONCEPT_REQUIRES_(!is_reference_wrapper<T>())>
+	  template<typename T, CONCEPT_REQUIRES_(!is_reference_wrapper<T>()())>
             T && operator()(T && t) const noexcept
             {
                 return std::forward<T>(t);
@@ -857,7 +857,7 @@ namespace ranges
                 return {std::forward<F>(f)};
             }
             /// \overload
-            template<typename F, CONCEPT_REQUIRES_(!std::is_bind_expression<uncvref_t<F>>())>
+	  template<typename F, CONCEPT_REQUIRES_(!std::is_bind_expression<uncvref_t<F>>()())>
             F operator()(F && f) const
             {
                 return std::forward<F>(f);

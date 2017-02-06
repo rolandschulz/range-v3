@@ -183,8 +183,8 @@ namespace ranges
             public:
                 using difference_type = difference_type_;
                 using single_pass = meta::or_c<
-                    (bool) SinglePass<range_iterator_t<Rng1>>(),
-                    (bool) SinglePass<range_iterator_t<Rng2>>()>;
+                    (bool) SinglePass<range_iterator_t<Rng1>>()(),
+                    (bool) SinglePass<range_iterator_t<Rng2>>()()>;
                 using value_type =
                     detail::decay_t<result_of_t<Fun&(copy_tag, range_iterator_t<Rng1>,
                         range_iterator_t<Rng2>)>>;
@@ -249,8 +249,8 @@ namespace ranges
             using end_cursor_t =
                 meta::if_c<
                     BoundedRange<Rng1>() && BoundedRange<Rng2>() &&
-                        !SinglePass<range_iterator_t<Rng1>>() &&
-                        !SinglePass<range_iterator_t<Rng2>>(),
+	      !SinglePass<range_iterator_t<Rng1>>()() &&
+	      !SinglePass<range_iterator_t<Rng2>>()(),
                     cursor,
                     sentinel>;
 

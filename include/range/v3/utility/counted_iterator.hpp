@@ -32,7 +32,7 @@ namespace ranges
             using UnambiguouslyConvertible =
                 meta::or_c<
                     (bool)Same<A, B>(),
-                    ConvertibleTo<A, B>() == !ConvertibleTo<B, A>()>;
+	      ConvertibleTo<A, B>() == !ConvertibleTo<B, A>()()>;
 
             template<typename A, typename B>
             using UnambiguouslyConvertibleType =
@@ -41,14 +41,14 @@ namespace ranges
                         (bool)Same<A, B>(),
                         meta::id<A>,
                         meta::if_c<
-                            ConvertibleTo<A, B>() && !ConvertibleTo<B, A>(),
+			  ConvertibleTo<A, B>() && !ConvertibleTo<B, A>()(),
                             meta::id<A>,
                             meta::if_c<
-                                ConvertibleTo<B, A>() && !ConvertibleTo<A, B>(),
+			      ConvertibleTo<B, A>() && !ConvertibleTo<A, B>()(),
                                 meta::id<B>,
                                 meta::nil_>>>>;
 
-            template<typename I, bool IsReadable = (bool) Readable<I>()>
+            template<typename I, bool IsReadable = (bool) Readable<I>()()>
             struct counted_cursor_types
             {};
 

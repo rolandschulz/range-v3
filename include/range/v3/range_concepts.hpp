@@ -390,7 +390,7 @@ namespace ranges
             struct is_view_impl_
               : std::integral_constant<
                     bool,
-                    Range<T>() && (!ContainerLike_<T>() || DerivedFrom<T, view_base>())
+	      Range<T>() && (!ContainerLike_<T>()() || DerivedFrom<T, view_base>())
                 >
             {};
 
